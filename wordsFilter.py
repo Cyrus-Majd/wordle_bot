@@ -1,4 +1,14 @@
+wordsOfCorrectLength = [] # here we go again with the long variable names nonsense
 
+# get rid of words that are not 5 letters long
+def filterByLength():
+    wordFile = open("allEnglishWords.txt", 'r')
+    lines = wordFile.readlines()
+    for line in lines:
+        if (len(line) == 6):
+            print(line)
+            wordsOfCorrectLength.append(line)
+        
 
 # method to throw all words in a hashset for easy recalling.
 def hashWords():
@@ -8,8 +18,10 @@ def hashWords():
 
 # main method
 def main():
+    # first, get rid of everything that is not exactly 5 chars long.
+    filterByLength()
+
     english_words = hashWords()
-    # demo print
     target = input("Enter the word you want to find in the dataset\n")
     print(target in english_words)
 
