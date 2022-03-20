@@ -1,4 +1,4 @@
-
+from time import sleep # i like sleeping
 
 ## the massive brain algorithm:
 
@@ -49,28 +49,25 @@ lettersValues = {
     "Q":0.11,
     "J":0.10,
     "Z":0.07,
+    "\n":0.0,
 }
 
 # map corresponding each word to its value.
 wordValues = {}
 
-def valuePerWord(word):
+def valuePerWord(word) -> float:
     sum = 0.0
-    print("type of sum", type(sum), "================")
     for each in word:
-        print(each, "type of letters:", type(lettersValues.get(each.upper())) )
-        sum = sum + lettersValues.get(each.upper())
-        print(sum)
+        # print(each, "type of letters:", type(lettersValues[each.upper()]) , "actual letter: ", lettersValues[each.upper()])
+        sum = sum + float(lettersValues[each.upper()])
+    print("WORD:", word, "SUM:", sum, "================")
     return sum
 
 # function to calculate the values of all words. puts results in wordValues map.
 def calculateAllValues():
     for each in wordsOfCorrectLength:
-        print("calling")
-        type(valuePerWord(each))
-        # wordSum = valuePerWord(each)
-        print("setting")
-        # wordValues[each] = wordSum
+        wordSum = valuePerWord(each)
+        wordValues[each] = wordSum
 
 # get rid of words that are not 5 letters long
 def filterByLength():
@@ -93,6 +90,8 @@ def main():
     # first, get rid of everything that is not exactly 5 chars long.
     filterByLength()
     calculateAllValues()
+
+    sleep(3)
 
     # print(valuePerWord("AaA"))
     # each = "Aa"
