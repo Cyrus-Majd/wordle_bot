@@ -1,4 +1,5 @@
 from time import sleep # i like sleeping
+import operator
 
 ## the massive brain algorithm:
 
@@ -55,17 +56,34 @@ lettersValues = {
 # map corresponding each word to its value.
 wordValues = {}
 
+# superior version of the map above lol
+wordValuesSorted = {}
+
+# checks if letters ina  word repeat. 
+def isUnique(word) -> bool:
+    return len(set(word)) == len(word)
+
+# this function should return the same thing every time, i just wanna know the highest value most completely diverse word for my first wordle guess.
+def highestUniqueWord(dict) -> str:
+    for each in list(dict.keys()):
+        if isUnique(each.upper()):
+            return each
+    return "bruh. no unique values? :megamindPleadingFace:"
+
+def findBestCandidate() -> str:
+    return ""
+
 def valuePerWord(word) -> float:
     sum = 0.0
     for each in word:
-        # print(each, "type of letters:", type(lettersValues[each.upper()]) , "actual letter: ", lettersValues[each.upper()])
         sum = sum + float(lettersValues[each.upper()])
-    print("WORD:", word, "SUM:", sum, "================")
+    print("WORD:", word, "SUM:", sum)
     return sum
 
 # function to calculate the values of all words. puts results in wordValues map.
 def calculateAllValues():
     for each in wordsOfCorrectLength:
+        each = each[:-1]    # get rid of stoopid \n character that messes with mah wordValues dictionary
         wordSum = valuePerWord(each)
         wordValues[each] = wordSum
 
@@ -91,13 +109,32 @@ def main():
     filterByLength()
     calculateAllValues()
 
-    sleep(3)
+    # sleep(1)
 
-    # print(valuePerWord("AaA"))
-    # each = "Aa"
-    # print(lettersValues.get(each.upper()))
+    wordValuesSorted = dict(sorted(wordValues.items(), key=operator.itemgetter(1), reverse=True)) # now sorted :)
+
+    # print(list(wordValuesSorted.keys()))
+
+    print()
+    # print("is 'apple' unique?", isUnique("apple"), "is 'aPe' unique?", isUnique("aPpe".upper()))
+
+    print(wordValuesSorted) ## this is all the words sorted by value.
+
+    # throw it in a text file so i can quickly solve the wordle and impress my girlfriend :)
+    with open('epic.txt', 'w') as f:
+        f.write(str(wordValuesSorted))
+
+    # welp. now i gotta do the hard part. user data input ;-;
+    # i dont know what the hell kinda algorithm i wrote before but i dont wanna read it. NEW PLAN. take a guess. if nothing
+    # works, tough luck, guess again with the next highest value word that doesnt have those exlcuded chars in the first word.
+    # if you hit a match, just like select the next highest word with specific constriants. ok you know what i mean. go do it nerd.
     
+    # FIRST GUESS. BASICLALY HIGHEST VALUE DIVERSE WORD.
+    print("Highest Value & Most Unique Word (FIRST GUESS):", highestUniqueWord(wordValuesSorted), "\nValue:", wordValuesSorted[highestUniqueWord(wordValuesSorted)])
 
+
+
+    ## this does some weird stuff with hashing the words but i dont need it anymore but its also genius sooo im keeping it
     # english_words = hashWords()
     # target = input("Enter the word you want to find in the dataset\n")
     # print(target in english_words)
