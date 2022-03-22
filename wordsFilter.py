@@ -59,6 +59,48 @@ wordValues = {}
 # superior version of the map above lol
 wordValuesSorted = {}
 
+# filters list by greens constraint
+def cutDownList(wordValuesSorted, greens):
+    for each in list(wordValuesSorted.keys()):
+        for index in list(greens.keys()):
+            # print("checking", each[index], "with", greens[index].lower())
+            if (each[index] != greens[index].lower()):
+                # print("uh oh.", each[index], " is not ", greens[index].lower())
+                # print("deleting:", each, "with a value of", wordValuesSorted[each])
+                del wordValuesSorted[each]
+                break
+    return wordValuesSorted
+
+# gives the green letters
+def analyzeResult(result):
+    greens = {} # keep track of green letters and their locations. LOCATION is KEY and LETTER is VALUE
+    print("lookin at result")
+    counter = 0
+    for each in result:
+        # print(each)
+        if (each.isupper()):
+            # print(each, "is uppercase!")
+            greens[counter] = each
+        counter = counter + 1
+    print(greens)
+    return greens
+
+# uhm... interacts with human?
+def interactWithHuman(wordValuesSorted):
+    # FIRST GUESS. BASICLALY HIGHEST VALUE DIVERSE WORD.
+    print("Highest Value & Most Unique Word (FIRST GUESS):", highestUniqueWord(wordValuesSorted), "\nValue:", wordValuesSorted[highestUniqueWord(wordValuesSorted)])
+
+    print("lmao what happened?")
+    print()
+
+    result1 = input("enter the result. green letters should be caps. ex: aPPlE means the Ps and the E are in the correct spot and are right.\n")
+
+    greens = analyzeResult(result1) # gives the greens.
+    wordValuesSorted = cutDownList(wordValuesSorted, greens)
+
+    print("list after filter:", wordValuesSorted) # OH MY FUCKING GOD IT ACTUALLY WORKED. I FILTERED BY THE GREEN LETTERS WTF!!!! LETS GOOOOO
+
+
 # checks if letters ina  word repeat. 
 def isUnique(word) -> bool:
     return len(set(word)) == len(word)
@@ -70,7 +112,7 @@ def highestUniqueWord(dict) -> str:
             return each
     return "bruh. no unique values? :megamindPleadingFace:"
 
-def findBestCandidate() -> str:
+def findBestCandidate(wordValuesSorted) -> str:
     return ""
 
 def valuePerWord(word) -> float:
@@ -129,10 +171,7 @@ def main():
     # works, tough luck, guess again with the next highest value word that doesnt have those exlcuded chars in the first word.
     # if you hit a match, just like select the next highest word with specific constriants. ok you know what i mean. go do it nerd.
     
-    # FIRST GUESS. BASICLALY HIGHEST VALUE DIVERSE WORD.
-    print("Highest Value & Most Unique Word (FIRST GUESS):", highestUniqueWord(wordValuesSorted), "\nValue:", wordValuesSorted[highestUniqueWord(wordValuesSorted)])
-
-
+    interactWithHuman(wordValuesSorted)
 
     ## this does some weird stuff with hashing the words but i dont need it anymore but its also genius sooo im keeping it
     # english_words = hashWords()
