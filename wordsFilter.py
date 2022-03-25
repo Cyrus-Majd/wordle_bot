@@ -1,3 +1,4 @@
+from gettext import find
 from time import sleep # i like sleeping
 import operator
 
@@ -73,29 +74,35 @@ def cutDownList(wordValuesSorted, greens):
 
 # gives the green letters
 def analyzeResult(result):
-    greens = {} # keep track of green letters and their locations. LOCATION is KEY and LETTER is VALUE
+    capitals = {} # keep track of uppercase (green and yellow and black, basiclly the capital letters) letters and their locations. LOCATION is KEY and LETTER is VALUE
     print("lookin at result")
     counter = 0
     for each in result:
         # print(each)
         if (each.isupper()):
             # print(each, "is uppercase!")
-            greens[counter] = each
+            capitals[counter] = each
         counter = counter + 1
-    print(greens)
-    return greens
+    print(capitals)
+    return capitals
 
 # uhm... interacts with human?
 def interactWithHuman(wordValuesSorted):
     # FIRST GUESS. BASICLALY HIGHEST VALUE DIVERSE WORD.
     print("Highest Value & Most Unique Word (FIRST GUESS):", highestUniqueWord(wordValuesSorted), "\nValue:", wordValuesSorted[highestUniqueWord(wordValuesSorted)])
 
-    print("lmao what happened?")
     print()
 
-    result1 = input("enter the result. green letters should be caps. ex: aPPlE means the Ps and the E are in the correct spot and are right.\n")
+    result = input("enter the result. green letters should be caps. ex: aPPlE means the Ps and the E are in the correct spot and are right.\n")
+    resultGreen = result[0:result.find(",")]
+    resultYellow = result[result.find(",")+1:result.find(",")+len(resultGreen)+1]
+    resultBlack = result[result.find(",")+len(resultYellow)+2:]
 
-    greens = analyzeResult(result1) # gives the greens.
+    print(resultGreen)
+    print(resultYellow)
+    print(resultBlack)
+
+    greens = analyzeResult(resultGreen) # gives the greens.
     wordValuesSorted = cutDownList(wordValuesSorted, greens)
 
     print("list after filter:", wordValuesSorted) # OH MY FUCKING GOD IT ACTUALLY WORKED. I FILTERED BY THE GREEN LETTERS WTF!!!! LETS GOOOOO
@@ -119,7 +126,7 @@ def valuePerWord(word) -> float:
     sum = 0.0
     for each in word:
         sum = sum + float(lettersValues[each.upper()])
-    print("WORD:", word, "SUM:", sum)
+    # print("WORD:", word, "SUM:", sum)
     return sum
 
 # function to calculate the values of all words. puts results in wordValues map.
@@ -160,7 +167,7 @@ def main():
     print()
     # print("is 'apple' unique?", isUnique("apple"), "is 'aPe' unique?", isUnique("aPpe".upper()))
 
-    print(wordValuesSorted) ## this is all the words sorted by value.
+    # print(wordValuesSorted) ## this is all the words sorted by value.
 
     # throw it in a text file so i can quickly solve the wordle and impress my girlfriend :)
     with open('epic.txt', 'w') as f:
