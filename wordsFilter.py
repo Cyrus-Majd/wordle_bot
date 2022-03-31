@@ -60,8 +60,18 @@ wordValues = {}
 # superior version of the map above lol
 wordValuesSorted = {}
 
+def cutDownListByBlack(wordValuesSorted, blacks):
+    for each in list(wordValuesSorted.keys()):
+        for index in list(blacks.values()):
+            # print("Comparing:", each, "and", index.lower())
+            if (index.lower() in each):
+                # print("\tThis word contains the character!")
+                del(wordValuesSorted[each])
+                break
+    return wordValuesSorted
+
 # filters list by greens constraint
-def cutDownList(wordValuesSorted, greens):
+def cutDownListByGreen(wordValuesSorted, greens):
     for each in list(wordValuesSorted.keys()):
         for index in list(greens.keys()):
             # print("checking", each[index], "with", greens[index].lower())
@@ -75,7 +85,7 @@ def cutDownList(wordValuesSorted, greens):
 # gives the green letters
 def analyzeResult(result):
     capitals = {} # keep track of uppercase (green and yellow and black, basiclly the capital letters) letters and their locations. LOCATION is KEY and LETTER is VALUE
-    print("lookin at result")
+    # print("lookin at result")
     counter = 0
     for each in result:
         # print(each)
@@ -83,7 +93,7 @@ def analyzeResult(result):
             # print(each, "is uppercase!")
             capitals[counter] = each
         counter = counter + 1
-    print(capitals)
+    # print(capitals)
     return capitals
 
 # uhm... interacts with human?
@@ -103,9 +113,17 @@ def interactWithHuman(wordValuesSorted):
     print(resultBlack)
 
     greens = analyzeResult(resultGreen) # gives the greens.
-    wordValuesSorted = cutDownList(wordValuesSorted, greens)
+    yellows = analyzeResult(resultYellow) # gives the yellows
+    blacks = analyzeResult(resultBlack)
 
-    print("list after filter:", wordValuesSorted) # OH MY FUCKING GOD IT ACTUALLY WORKED. I FILTERED BY THE GREEN LETTERS WTF!!!! LETS GOOOOO
+    print("\t", greens, "\n\t", yellows, "\n\t", blacks, "\n")
+    wordValuesSorted = cutDownListByGreen(wordValuesSorted, greens)
+    print("list after green filter:", wordValuesSorted)
+    wordValuesSorted = cutDownListByBlack(wordValuesSorted, blacks)
+    print()
+    print("list after black filter:", wordValuesSorted)
+
+    # print("list after filter:", wordValuesSorted) # OH MY FUCKING GOD IT ACTUALLY WORKED. I FILTERED BY THE GREEN LETTERS WTF!!!! LETS GOOOOO
 
 
 # checks if letters ina  word repeat. 
